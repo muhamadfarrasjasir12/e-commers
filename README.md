@@ -6,7 +6,7 @@ Nama: Muhamad Farras Jasir
 
 NIM: 312210361
 
-Nama: Yehezkiel Juandro Meta
+Nama: Yehezkiel Juandro Metta
 
 NIM: 312210376
 
