@@ -354,6 +354,156 @@ untuk bagian footer
 	})(jQuery);
 </script>
 
+# Fitur ini merupakan fitur favorit yang membuat CodeIgniter menjadi framework unggulan para developer. Model-View-Controller (MVC) ini merupakan praktik standar industri saat bekerja dengan aplikasi web yang berfungsi untuk memisahkan data, logika, dan presentasi dalam aplikasi.
+
+# Controllers/Admin
+
+<?php
+
+class admin extends CI_Controller
+{
+
+	function __construct()
+	{
+		parent::__construct();
+
+		if ($this->session->userdata('status') != "login") {
+			redirect(base_url("login"));
+		}
+		$this->load->model('m_login');
+		$this->load->helper('url');
+	}
+
+	function index()
+	{
+		$data['user'] = $this->m_login->tampil_data()->result();
+		$this->load->view('admin', $data);
+	}
+	function edit_password()
+	{
+		$data['user'] = $this->m_login->tampil_data_ubah_password()->result();
+		$this->load->view('ubah_password', $data);
+	}
+	public function hapus($id)
+	{
+		$where = array('id_pendaftar' => $id);
+		$this->m_login->hapus_data($where, 'pendaftaran');
+		redirect('admin');
+	}
+ 	public function update()
+	{
+		$id = $this->input->post('id');
+		$nama = $this->input->post('nama');
+		$nim = $this->input->post('nim');
+		$email = $this->input->post('email');
+		$kelas = $this->input->post('kelas');
+		$angkatan = $this->input->post('angkatan');
+		$lomba = $this->input->post('lomba');
+		$pembayaran = $this->input->post('pembayaran');
+
+
+
+		$data = array(
+			'nama' => $nama,
+			'nim' => $nim,
+			'email' => $email,
+			'kelas' => $kelas,
+			'angkatan' => $angkatan,
+			'lomba' => $lomba,
+			'pembayaran' => $pembayaran
+		);
+		$where = array(
+			'id_pendaftar' => $id
+		);
+		$this->m_login->update_data($where, $data, 'pendaftaran');
+		echo "<script>alert('Data berhasil disimpan');
+				location.href = 'index';</script>";
+	}
+	public function update_admin()
+	{
+		$id = $this->input->post('id');
+		$password = $this->input->post('password');
+		$password2 = $this->input->post('password2');
+
+		if ($password != $password2) {
+			echo "<script>alert('Konfirmasi Password Tidak Sama!');
+				location.href = 'edit_password';</script>";
+		} else {
+			$final_password = md5($password);
+			$data = array(
+				'password' => $final_password
+			);
+			$where = array(
+				'id' => $id
+			);
+			$this->m_login->update_data($where, $data, 'admin');
+			echo "<script>alert('Password berhasil diubah');
+				location.href = 'index';</script>";
+		}
+	}
+ 	function update_uiux()
+	{
+		$nama_ketua = $this->input->post('nama_ketua');
+		$nama_tim = $this->input->post('nama_tim');
+		$asal = $this->input->post('asal');
+		$no_tlp = $this->input->post('no_tlp');
+		$lomba = $this->input->post('lomba');
+		$dokumen = $this->input->post('dokumen');
+		$id = $this->input->post('id');
+
+		$data = array(
+			'nama_ketua' => $nama_ketua,
+			'nama_tim' => $nama_tim,
+			'asal' => $asal,
+			'no_hp' => $no_tlp,
+			'lomba' => $lomba,
+			'dokumen_pendukung' => $dokumen
+		);
+		$where = array(
+			'id' => $id
+		);
+		$this->m_login->update_data($where, $data, 'uiux');
+		echo "<script>alert('Data berhasil disimpan');
+				location.href = 'lihat_uiux';</script>";
+	}
+
+ 	
+# Controllers/Fravor
+
+<?php
+
+class fravor extends CI_Controller
+{
+
+    function index()
+    {
+        $this->load->view('template/header');
+        $this->load->view('home');
+        $this->load->view('template/footer');
+    }
+    function wisata()
+    {
+        $this->load->view('template/header');
+        $this->load->view('wisata');
+        $this->load->view('template/footer');
+    }
+
+    function booking()
+    {
+        $this->load->view('template/header');
+        $this->load->view('booking');
+        $this->load->view('template/footer');
+    }
+    function contact()
+    {
+        $this->load->view('contact');
+    }
+
+# View
+
+Bagian view adalah bagian yg berisi seperti admin, contact, booking, wisata dan lain-lain
+
+
 # Home
 
 Bagian Home
